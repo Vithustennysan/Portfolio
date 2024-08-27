@@ -22,19 +22,46 @@ import five from './assets/project1/5.png';
 
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-const TechCard = ({image}) => {
+const TechCard = ({image, name}) => {
   return (
     <>
       <div className='w-20 h-20 md:w-28 md:h-28 p-2 bg-gray-900 rounded-lg' data-aos="zoom-in-down">
         <img src={image} className='w-full h-full' alt="" />
+        <p className='text-center font-semibold mt-1'>{name}</p>
       </div>
     </>
   )
 }
 
+  const FloatingNav = () => {
+    return(
+      <div className='bg-neutral-900 w-fit md:px-12 px-2 md:h-12 h-16 rounded-xl fixed bottom-8 bg-opacity-85 z-10 left-1/2 -translate-x-1/2'>
+        <ul className='flex h-full md:gap-7 text-green-400 gap-3 font-bold justify-center items-center'>
+          <li><a href='#' className=' hover:text-gray-400'>Home</a></li>
+          <li><a href='#about' className=' hover:text-gray-400'>About</a></li>
+          <li><a href='#techs' className=' hover:text-gray-400'>Techs</a></li>
+          <li><a href='#projects' className=' hover:text-gray-400'>Projects</a></li>
+          <li><a href='#contact' className=' hover:text-gray-400'>Contact</a></li>
+        </ul>
+      </div>
+    )
+  }
+
 function App() {
+
+  const [showNav, setShowNav] = useState(false);
+
+  const onScroll = () => {
+    if (window.scrollY > 100) {
+      setShowNav(true);
+    } else {
+      setShowNav(false);
+    }
+  }
+
+  window.addEventListener("scroll", onScroll);
 
   useEffect(() => {
     AOS.init({
@@ -46,18 +73,20 @@ function App() {
 
   return (
     <>
+    { showNav && <FloatingNav/>}
+
     <div className=' text-white md:px-4 px-3 md:w-11/12 mx-auto'>
 
       {/* ----- HEADER -------- */}
       <header className='flex justify-between items-center mt-2 py-1 mb-9 bg-transparent  text-gray-100'>
-          <h2 className='text-2xl md:text-3xl font-bold'><span className='text-green-400'>Vithus</span>tennysan</h2>
-          <nav>
+          <h2 className='text-3xl md:text-4xl font-bold'><span className='text-green-400'>Vithu</span>shan</h2>
+          <nav className='hidden md:block'>
             <ul className='flex md:gap-4 gap-1 font-semibold'>
-              <li><a href='#' className='text-green-300 hover:text-gray-400 hidden md:block'>Home</a></li>
+              <li><a href='#' className='text-green-300 hover:text-gray-400'>Home</a></li>
               <li><a href='#about' className='text-green-300 hover:text-gray-400'>About</a></li>
-              <li><a href='#techs' className='text-green-300 hover:text-gray-400 hidden md:block'>Techs</a></li>
-              <li><a href='#' className='text-green-300 hover:text-gray-400 hidden md:block'>Projects</a></li>
-              <li><a href='#' className='text-green-300 hover:text-gray-400'>Contact</a></li>
+              <li><a href='#techs' className='text-green-300 hover:text-gray-400'>Techs</a></li>
+              <li><a href='#projects' className='text-green-300 hover:text-gray-400'>Projects</a></li>
+              <li><a href='#contact' className='text-green-300 hover:text-gray-400'>Contact</a></li>
             </ul>
           </nav>
       </header>
@@ -66,7 +95,7 @@ function App() {
       <div className='flex sm:flex-row flex-col items-center md:gap-12 gap-8 mb-24'>
 
         <div className='md:w-1/2 sm:w-2/5' data-aos="fade-right">
-          <img className='profile w-3/4 md:w-4/5 mx-auto drop-shadow-2xl sha' src={profile} alt="profile pic for banner" />
+          <img className='w-3/4 md:w-4/5 mx-auto drop-shadow-2xl border-b-4 border-gray-500 profile' src={profile} alt="profile pic for banner" />
         </div>
 
         <div className='md:w-1/2 sm:w-3/5' data-aos="fade-left">
@@ -78,11 +107,11 @@ function App() {
             Currently I am focusing on 
             <span className='text-green-400'> Web Development</span> as my area of interest.
           </p>
-          <button onClick={"/"} className='bg-slate-700 rounded-md py-2 px-3 mt-4 mr-4 font-semibold'>About me</button>
-          <button className='bg-sky-700 rounded-md py-2 px-3 mt-4 font-semibold'>Download CV</button>
+          <button onClick={"/"} className='bg-slate-700 rounded-md py-2 px-3 mt-4 mr-4 font-semibold'><a href="#about">About me</a></button>
+          <button className='bg-sky-700 rounded-md py-2 px-3 mt-4 font-semibold'><a href='/Vithushan_CV.pdf' download={true}>Download CV</a></button>
 
           <div className='flex mt-8 h-8 gap-5'>
-            <a target="_blank" href="https://www.linkedin.com/in/vithushan-e-t-l-265a072a1/" target="_blank" className='text-gray-400 hover:text-green-400'>
+            <a target="_blank" href="https://www.linkedin.com/in/vithushan-e-t-l-265a072a1/" className='text-gray-400 hover:text-green-400'>
               <img className='h-full' src="https://cdn-icons-png.flaticon.com/128/3536/3536505.png" alt="" />
             </a>
             <a target="_blank" href="https://github.com/Vithustennysan">
@@ -104,13 +133,13 @@ function App() {
 
         <div className='md:w-2/3 mx-auto md:px-16 px-3 text-gray-300' data-aos="fade-up">
           <p  >I am Vithushan E.T.L. from jaffna. From my childhood
-          I was fascinated about the world of technology. I studied at Jaffna Central College from grade 1 to Advanced level. Currently I am studying <span className='text-green-400'>Computer Engineering in University of Peradeniya. </span>
+          I was fascinated about the world of technology. I studied at <span className='text-green-400'>Jaffna Central College</span> from grade 1 to Advanced level. Currently I am studying <span className='text-green-400'>Computer Engineering in University of Peradeniya. </span>
            I am third year student. I have been working on small projects and learning new technologies since then.
           </p>
           <br />
           <p>I am a
-          <span className='text-green-400'> Fullstack Developer</span> with a strong passion
-          for web development. I am currently focusing on building web applications using React, Springboot, Mysql.
+          <span className='text-green-400'> Fresher</span> with a strong passion
+          for <span className='text-green-400'>Web Development</span>. I am currently focusing on building web applications using React, Springboot, Mysql.
           I am exited to work on a real world application and contribute to the tech community.
           </p><br />
 
@@ -126,23 +155,23 @@ function App() {
       </div>
 
       {/* ------ TECHS ------- */}
-      <div className='mb-24'>
-        <h2 className='text-center text-3xl md:text-4xl mb-6 font-bold' id='techs'>Techs</h2>
-        <div className='flex gap-6 md:w-3/4 m-auto justify-center flex-wrap'>
-          <TechCard image={react}/>
-          <TechCard image={python}/>
-          <TechCard image={git}/>
-          <TechCard image={github}/>
-          <TechCard image={java}/>
-          <TechCard image={redux}/>
-          <TechCard image={javascript}/>
-          <TechCard image={html}/>
-          <TechCard image={css}/>
-          <TechCard image={tailwindcss}/>
-          <TechCard image={bootstrap}/>
-          <TechCard image={C}/>
-          <TechCard image={mysql}/>
-          <TechCard image={Arduino}/>
+      <div className='mb-24' id='techs'>
+        <h2 className='text-center text-3xl md:text-4xl mb-6 font-bold' >Techs</h2>
+        <div className='flex gap-7 md:w-3/4 m-auto justify-center flex-wrap'>
+          <TechCard image={react} name={"React"}/>
+          <TechCard image={python} name={"Python"}/>
+          <TechCard image={git} name={"Git"}/>
+          <TechCard image={github} name={"Github"}/>
+          <TechCard image={java} name={"Java"}/>
+          <TechCard image={redux} name={"Redux"}/>
+          <TechCard image={javascript} name={"JavaScript"}/>
+          <TechCard image={html} name={"Html"}/>
+          <TechCard image={css} name={"css"}/>
+          <TechCard image={tailwindcss} name={"TailwindCss"}/>
+          <TechCard image={bootstrap} name={"Bootstrap"}/>
+          <TechCard image={C} name={"C"}/>
+          <TechCard image={mysql} name={"MySql"}/>
+          <TechCard image={Arduino} name={"Arduino"}/>
         </div>
       </div>
 
@@ -218,6 +247,25 @@ function App() {
                </p>
           </div>
 
+        </div>
+      </div>
+
+      <div className='mb-12' id='contact'>
+        <h2 className='text-center text-3xl md:text-4xl mb-6 font-bold'>Contact</h2>
+        <div className='gap-3 bg-blue-950 rounded-lg px-4 py-6'>
+          <p className='text-white text-xl text-center w-full font-bold mb-5'>If you want to contact me you can use the
+          following details. I will be happy to help you.</p>
+          <div className=' w-fit mx-auto'>
+            <div className='flex items-center gap-3 w-300 mb-3'>
+              <img src="https://cdn-icons-png.flaticon.com/128/9068/9068642.png" className='w-16' alt="mail-icon" />
+              <a href='mailto:vithustennysan20@gmail.com' className='text-gray-300 font-semibold hover:text-white'>vithustennysan20@gmail.com</a>
+            </div>
+            <div className='flex items-center gap-3'>
+              <img src="https://cdn-icons-png.flaticon.com/128/724/724664.png" className='w-16' alt="phone-icon" />
+              <p className='text-gray-300 font-semibold hover:text-white'>0760832397</p>
+            </div>
+
+          </div>
         </div>
       </div>
 
